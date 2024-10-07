@@ -15,13 +15,10 @@ const app = express();
 const PORT = process.env.PORT || 3000; // Use environment variable for port
 app.use(express.json());
 
-const path = require('/nodejs/home.html');
-
 // API Home route
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'home.html')); // Adjust the path to where your HTML file is located
+  res.send('This is my API running');
 });
-
 
 // Customer Schema
 const customerSchema = new mongoose.Schema({
