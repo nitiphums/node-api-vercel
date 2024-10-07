@@ -15,6 +15,14 @@ require('dotenv').config(); // For environment variables
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.use((req, res, next) => {
+  res.setHeader(
+    "Content-Security-Policy",
+    "default-src 'self'; script-src 'self'; style-src 'self';"
+  );
+  next();
+});
+
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public'))); 
 
@@ -22,6 +30,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'home.html'));
 });
+
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+}
 
 module.exports = app;
 // app.get('/home', (req, res) => {
