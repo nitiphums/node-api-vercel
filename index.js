@@ -19,12 +19,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 // API Home route
 
 app.get('/', (req, res) => {
-  res.readFile('This is my running API');
+  res.sendFile(path.join(__dirname, 'views', 'home.html'));
 });
-
-app.get('/home', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'nodejs/home.html'));
-});
+// app.get('/home', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'views', 'home.html'));
+// });
 
 app.get('/about', (req, res) => {
   res.send('This is my about route');
