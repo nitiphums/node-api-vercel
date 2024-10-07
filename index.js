@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const path = require('path'); // Required for resolving file paths
 require('dotenv').config(); // For environment variables
 
 // Connect to MongoDB (use environment variable)
@@ -16,7 +17,6 @@ const PORT = process.env.PORT || 3000; // Use environment variable for port
 app.use(express.json());
 
 // API Home route
-const path = require('/home.html');
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'home.html'));
 });
