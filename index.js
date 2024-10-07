@@ -17,6 +17,8 @@ const PORT = process.env.PORT || 3000; // Use environment variable for port
 app.use(express.json());
 
 // API Home route
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'home.html'));
 });
