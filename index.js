@@ -9,7 +9,13 @@ mongoose.connect('mongodb://127.0.0.1:27017/?directConnection=true&serverSelecti
 });
 
 const app = express();
+const PORT = 3000; // Set the desired port
 app.use(express.json());
+
+// API Home route
+app.get('/', (req, res) => {
+  res.send('This is my API running');
+});
 
 // Customer Schema
 const customerSchema = new mongoose.Schema({
@@ -80,37 +86,28 @@ app.post('/customers/:id/topup', async (req, res) => {
   res.json(customer);
 });
 
-
 // Add or Update Rate Discount API
 app.post('/customers/:id/discount', async (req, res) => {
-    const { rate_discount } = req.body;
-    
-    // ค้นหาลูกค้าจากฐานข้อมูล
-    const customer = await Customer.findById(req.params.id);
-    if (!customer) return res.status(404).send('Customer not found');
-    
-    // ตรวจสอบว่า rate_discount เป็นตัวเลขที่ถูกต้อง (0-100)
-    if (rate_discount < 0 || rate_discount > 100) {
-      return res.status(400).send('Invalid rate_discount value. Must be between 0 and 100');
-    }
-    
-    // ตั้งค่า rate_discount ใหม่
-    customer.rate_discount = rate_discount;
-    
-    // บันทึกการเปลี่ยนแปลงลงในฐานข้อมูล
-    await customer.save();
-    
-    // ส่งข้อมูลลูกค้าที่อัปเดตกลับไป
-    res.json(customer);
-  });
+  const { rate_discount } = req.body;
 
-  
+  const customer = await Customer.findById(req.params.id);
+  if (!customer) return res.status(404).send('Customer not found');
+
+  if (rate_discount < 0 || rate_discount > 100) {
+    return res.status(400).send('Invalid rate_discount value. Must be between 0 and 100');
+  }
+
+  customer.rate_discount = rate_discount;
+  await customer.save();
+  res.json(customer);
+});
+
 // 1.3 Purchase API
 app.post('/customers/:id/purchase', async (req, res) => {
   const { product_name, product_price } = req.body;
   const customer = await Customer.findById(req.params.id);
   if (!customer) return res.status(404).send('Customer not found');
-  
+
   const discount = customer.rate_discount ? (customer.rate_discount / 100) * product_price : 0;
   const final_price = product_price - discount;
 
@@ -144,6 +141,6 @@ app.get('/customers/:id/orders', async (req, res) => {
 });
 
 // Start the server
-app.listen(3000, () => {
-  console.log('Server is running on port 3000');
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
