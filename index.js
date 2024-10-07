@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const path = require('path');
 require('dotenv').config(); // For environment variables
 
 // Connect to MongoDB (use environment variable)
@@ -12,12 +13,12 @@ mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/mydb', {
 .catch(err => console.error('MongoDB connection error:', err));
 
 const app = express();
-const PORT = process.env.PORT || 3000; // Use environment variable for port
-app.use(express.json());
-
+const PORT = process.env.PORT || 3000;
+// app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public'))); 
 // API Home route
 app.get('/', (req, res) => {
-  res.send('This is my API running');
+  res.sendFile(path.join(__dirname, 'views', 'home.html'));
 });
 
 app.get('/about', (req, res) => {
