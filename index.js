@@ -16,8 +16,9 @@ const PORT = process.env.PORT || 3000; // Use environment variable for port
 app.use(express.json());
 
 // API Home route
+const path = require('/home.html');
 app.get('/', (req, res) => {
-  res.send('This is my API running');
+  res.sendFile(path.join(__dirname, 'views', 'home.html'));
 });
 
 app.get('/about', (req, res) => {
