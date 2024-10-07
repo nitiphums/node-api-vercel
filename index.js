@@ -20,6 +20,10 @@ app.get('/', (req, res) => {
   res.send('This is my API running');
 });
 
+app.get('/about', (req, res) => {
+  res.send('This is my about route');
+});
+
 // Customer Schema
 const customerSchema = new mongoose.Schema({
   name: String,
