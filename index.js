@@ -14,13 +14,16 @@ require('dotenv').config(); // For environment variables
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public'))); 
-// API Home route
 
+// API Home route
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'home.html'));
 });
+
+module.exports = app;
 // app.get('/home', (req, res) => {
 //   res.sendFile(path.join(__dirname, 'views', 'home.html'));
 // });
